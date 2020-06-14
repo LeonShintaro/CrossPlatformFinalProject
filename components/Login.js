@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import * as firebase from 'firebase'
+import * as Google from 'expo-google-app-auth';
 import * as facebook from 'expo-facebook'
 import { Container, Form, Input, Item, Button, Label } from 'native-base'
 import { firebaseConfig } from '../utils/helpers'
@@ -80,6 +81,23 @@ const Login = ({ navigation }) => {
         }
     }
 
+      signInWithGoogleAsync = async () => {
+        try {
+          const result = await Google.logInAsync({
+            androidClientId: '541448129801-audamoqbhnst9qp5osk162iiergu6gnk.apps.googleusercontent.com',
+            iosClientId: '541448129801-o65uke0tb17774mcl2ligli531h9dkoq.apps.googleusercontent.com',
+            scopes: ['profile', 'email'],
+          });
+      
+          if (result.type === 'success') {
+            return result.accessToken;
+          } else {
+            return { cancelled: true };
+          }
+        } catch (e) {
+          return { error: true };
+        }
+      }
 
     return (
         <Container style={styles.container}>
